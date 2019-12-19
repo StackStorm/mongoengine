@@ -51,7 +51,9 @@ class BaseDocument(object):
 
     @property
     def _created(self):
-        return self._db_data != None or self._lazy
+        # NOTE: Originally ourcode and mongoengine determins if model already exists if
+        # pk field is already set
+        return self._db_data != None or self._lazy or getattr(self, 'pk', None)
 
     def __iter__(self):
         if 'id' in self._fields and 'id' not in self._fields_ordered:
